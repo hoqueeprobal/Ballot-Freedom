@@ -1,6 +1,6 @@
-# 🗳️ Ballote Freedom
+# 🗳️ Ballot Freedom
 
-**Ballote Freedoms** is a simple **console-based voting system written in C** developed as part of our **Structured Programming Languages Lab Course**
+**Ballot Freedom** is a simple **console-based voting system written in C** developed as part of our **Structured Programming Languages Lab Course**
 It allows users to add candidates, cast votes, view vote counts, and check the leading candidate — all through an easy-to-use text menu.  
 This project is great for beginners who want to learn about **C programming basics, arrays, and user input handling**.
 
@@ -39,6 +39,7 @@ Ballote-Freedom/
 ```
 
 ---
+
 
 
 
