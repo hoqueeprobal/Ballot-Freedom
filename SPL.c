@@ -14,6 +14,7 @@ int initialized = 0;
 // Input candidate names and initialize vote counts
 void inputCandidates() {
     char input[10];
+
     printf(" Enter total number of candidates : ");
     fgets(input, sizeof(input), stdin);
     candidateCount = atoi(input);
@@ -25,18 +26,39 @@ void inputCandidates() {
     }
 
     printf(" Enter names of %d candidates:\n", candidateCount);
+
     for (int i = 0; i < candidateCount; i++) {
-        printf(" Candidate %d: ", i + 1);
-        fgets(candidates[i], MAX_NAME_LENGTH, stdin);
-        candidates[i][strcspn(candidates[i], "\n")] = '\0';
-        votes[i] = 0; // Initialize vote count
+        int isDuplicate;
+        do {
+            printf(" Candidate %d: ", i + 1);
+            fgets(candidates[i], MAX_NAME_LENGTH, stdin);
+            candidates[i][strcspn(candidates[i], "\n")] = '\0';
+
+            if (strlen(candidates[i]) == 0) {
+                printf(" Name cannot be empty. Try again.\n");
+                isDuplicate = 1;
+                continue;
+            }
+
+            isDuplicate = 0;
+            for (int j = 0; j < i; j++) {
+                if (strcmp(candidates[i], candidates[j]) == 0) {
+                    printf(" Duplicate name found. Please enter a different name.\n");
+                    isDuplicate = 1;
+                    break;
+                }
+            }
+        } while (isDuplicate);
+
+        votes[i] = 0;
     }
 
+    spoiledVotes = 0;
     initialized = 1;
     printf("\n CANDIDATE LIST SAVED SUCCESSFULLY!\n");
 }
 
-// Cast a vote for a candidate or spoil the vote
+// Cast a vote
 void castVote() {
     if (!initialized) {
         printf("\n Oops! YOU NEED TO ADD CANDIDATES FIRST\n");
@@ -67,7 +89,7 @@ void castVote() {
     }
 }
 
-// Display the total vote count for each candidate
+// Display vote counts
 void voteCount() {
     if (!initialized) {
         printf("\n Oops! YOU NEED TO ADD CANDIDATES FIRST\n");
@@ -81,7 +103,7 @@ void voteCount() {
     printf(" Spoiled Votes - %d\n", spoiledVotes);
 }
 
-// Find and display the leading candidate or a tie
+// Show leading candidate
 void getLeadingCandidate() {
     if (!initialized) {
         printf("\n Oops! YOU NEED TO ADD CANDIDATES FIRST\n");
@@ -114,7 +136,7 @@ void getLeadingCandidate() {
         printf(" It's a tie! %d votes each:\n", maxVotes);
         for (int i = 0; i < candidateCount; i++) {
             if (votes[i] == maxVotes) {
-                printf("%s,", candidates[i]);
+                printf(" %s\n", candidates[i]);
             }
         }
     } else {
@@ -132,7 +154,7 @@ int main() {
     int choice;
 
     do {
-        printf("\n\t\t\t BALLOTE FREEDOMS\n");
+        printf("\n\t\t\t BALLOT FREEDOM\n");
         printf("\n 1. Enter Total Candidates' Number and Their Names");
         printf("\n 2. Cast Your Vote");
         printf("\n 3. See Total Vote Count");
@@ -156,12 +178,11 @@ int main() {
                 getLeadingCandidate();
                 break;
             case 0:
-                printf("\nExiting program. Thank you!\n");
+                printf("\n Exiting program. Thank you!\n");
                 break;
             default:
-                printf("\nInvalid choice! Try again.\n");
+                printf("\n Invalid choice! Try again.\n");
         }
-
     } while (choice != 0);
 
     return 0;
